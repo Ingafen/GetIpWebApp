@@ -34,8 +34,7 @@ public class HomeController : Controller
     }
     
     string GetLocalIpAddress()  
-    {  
-        UnicastIPAddressInformation? mostSuitableIp = null;  
+    {          
         var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();  
         foreach (var network in networkInterfaces)  
         {  
@@ -52,27 +51,11 @@ public class HomeController : Controller
                     continue;  
       
                 if (IPAddress.IsLoopback(address.Address))  
-                    continue;  
-      
-                if (!address.IsDnsEligible)  
-                {  
-                    if (mostSuitableIp == null)  
-                        mostSuitableIp = address;  
-                    continue;  
-                }  
-      
-                // The best IP is the IP got from DHCP server  
-                if (address.PrefixOrigin != PrefixOrigin.Dhcp)  
-                {  
-                    if (mostSuitableIp is not { IsDnsEligible: true })  
-                        mostSuitableIp = address;  
-                    continue;  
-                }  
+                    continue;                        
+                                
                 return address.Address.ToString();  
             }  
         }  
-        return mostSuitableIp != null  
-            ? mostSuitableIp.Address.ToString()  
-            : "";  
+        return "";  
     } 
 }
